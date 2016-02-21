@@ -18,20 +18,20 @@ Typical use cases:
 
 ### Ingress Resource
 Typically, service and pods have IPs only routable by the cluster network. All traffic that ends up at an edge router is either dropped or forwarded elsewhere. Conceptually, this might look like:
-
+```
 Internet
 |
 ----------
 [Services]
-
+```
 An ingress is a collection of rules that allow inbound connections to reach the cluster services.
-
+```
 Internet
 |
 [ Ingress ]
 --|----|--
 [ Services ]
-
+```
 It can be configured to give services externally-reachable urls, load balance traffic, terminate SSL, offer name based virtual hosting etc. Users request ingress by POSTing the Ingress resource to the API server. An `Ingress Controller` is responsible for fulfilling the Ingress, usually with a loadbalancer, though it may also configure your edge router or additional frontends to help handle the traffic in an HA manner.
 
 A minimal Ingress might look like that:
@@ -49,10 +49,10 @@ A minimal Ingress might look like that:
 11.          serviceName: test
 12.          servicePort: 80
 ```
-Lines 01-04: As with all other Kubenetes config, an Ingress needs `apiVersion`, `kind`, and `metadata` fields.
-Lines 05-07: Ingress spec has all the information needed to configure a loadbalancer or proxy server. Most importantly, it contains a list of rules matched against all incoming requests. Currently the Ingress resource only supports http rules.
-Lines 08-09: Each http rule contains the following information: A host, a list of paths (eg: /testpath), each of which has an associated backend (test:80). Both the host and path must match the content of an incoming request before the loadbalancer directs traffic to the backend.
-Lines 10-12: A backend is a service:port combination as described in the services doc. Ingress traffic is typically sent directly to the endpoints matching a backend.
+- Lines 01-04: As with all other Kubenetes config, an Ingress needs `apiVersion`, `kind`, and `metadata` fields.
+- Lines 05-07: Ingress spec has all the information needed to configure a loadbalancer or proxy server. Most importantly, it contains a list of rules matched against all incoming requests. Currently the Ingress resource only supports http rules.
+- Lines 08-09: Each http rule contains the following information: A host, a list of paths (eg: /testpath), each of which has an associated backend (test:80). Both the host and path must match the content of an incoming request before the loadbalancer directs traffic to the backend.
+- Lines 10-12: A backend is a service:port combination as described in the services doc. Ingress traffic is typically sent directly to the endpoints matching a backend.
 
 ### Horizontal Pod Autoscaler
 It allows the number of pods in a replication controller or deployment to scale automatically based on observed CPU utilization.
