@@ -19,15 +19,15 @@ Typical use cases:
 ### Ingress Resource
 Typically, service and pods have IPs only routable by the cluster network. All traffic that ends up at an edge router is either dropped or forwarded elsewhere. Conceptually, this might look like:
 
- Internet
-     |
+Internet
+|
 ----------
 [Services]
 
 An ingress is a collection of rules that allow inbound connections to reach the cluster services.
 
- Internet
-     |
+Internet
+|
 [ Ingress ]
 --|----|--
 [ Services ]
