@@ -62,5 +62,40 @@ A `job` creates one or more pods and ensures that a specified number of them suc
 
 A simple case is to create one job object in order to reliably run on pod to completion. A job of course can be used to run multiple pods in parallel.
 
+### Third party resource
+The `third party resource` describes the multiple versions of a custom resource that user wants to add to the Kubernetes API. `Third party resource` is a non-namespaced resource, attempting to place it in a resource will return an error.
+
+Each `third party resource` has the following:
+- Standard Kubernetes object metadata.
+- Resource Kind - the kind of the resources described by this third party resource.
+- Description - a free text description of the resource
+- API Group - an API group that this resource should be placed into
+- Versions - one or more `Version` objects.
+
+#### Expectations about third party objects
+Every object that is added to a third party Kubernetes object store is expected to contain Kubernetes compatible `object metadata`. This requirement enables the K8S API server to provide the following features:
+- Filtering lists of object via LabelQueries
+- `resourceVersion`-based optimistic concurrency via compare-and-swap
+- Versioned storage
+- Event recording
+- Integration with basic `kubectl` CLI
+- Watch for resource changes
+
+Third Party Resources immediately stood out to us because we now have the opportunity to take advantage of all the built-in things Kubernetes provides like metadata, labels, annotations, versioning, api watches, etc while having the flexibility to define what we want in a resource. What's more, third party resources can be grouped or nested.
+
+Here is an example of a third party resource:
+```
+metadata:
+  name: mysql-db.prsn.io
+  labels:
+    resource: database
+    object: mysql
+apiVersion: extensions/v1beta1
+kind: ThirdPartyResource
+description: "A specification of database for mysql"
+versions:
+  - name: stable/v1
+```
+
 ### Want more ?
 https://github.com/kubernetes/kubernetes/tree/release-1.1/docs/design
